@@ -2,10 +2,11 @@ package hu.flowacademy.iotaspring.exchange;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.UUID;
 
 /**
  * Exchange REST API
@@ -31,8 +32,19 @@ public class ExchangeController {
 //    }
 
     @PostMapping("/exchange")
-    public ExchangeResponse exchange(@RequestBody ExchangeRequest request) {
+    public ExchangeData exchange(@RequestBody ExchangeRequest request) {
         return exchangeService.exchange(request);
+    }
+
+    @GetMapping("/exchange")
+    public List<ExchangeData> findAll() {
+        return exchangeService.findAll();
+    }
+
+    @DeleteMapping("/exchange/{id}")
+    public ResponseEntity<Void> delete(@PathVariable String id) {
+        exchangeService.delete(UUID.fromString(id));
+        return ResponseEntity.accepted().build();
     }
 
 }

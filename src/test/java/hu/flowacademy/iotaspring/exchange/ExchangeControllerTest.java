@@ -8,7 +8,6 @@ class ExchangeControllerTest {
 
     @BeforeAll
     public void before() {
-        ExchangeController exchangeController = new ExchangeController(new ExchangeService());
     }
 
 }
