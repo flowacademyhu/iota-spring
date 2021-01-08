@@ -1,5 +1,8 @@
 package hu.flowacademy.iotaspring.api;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
@@ -42,5 +45,16 @@ public class HelloController {
         log.info("Origin is: " + origin);
         return dataStore;
     }
+
+}
+
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+class Request {
+
+    private String name;
+    private int age;
+    private String nation;
 
 }
