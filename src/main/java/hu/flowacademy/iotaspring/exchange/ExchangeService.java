@@ -15,6 +15,7 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.UUID;
 
 @Slf4j
@@ -53,7 +54,7 @@ public class ExchangeService {
         }
     }
 
-    private ExchangeData buildResponse(ExchangeRequest exchangeRequest, ExchangeApiResponse exchangeApiResponse) {
+    ExchangeData buildResponse(ExchangeRequest exchangeRequest, ExchangeApiResponse exchangeApiResponse) {
         BigDecimal rate = exchangeApiResponse.rates.get(exchangeRequest.getFrom());
 //        return new ExchangeResponse(rate, rate.multiply(exchangeRequest.getAmount()),
 //                exchangeRequest.getFrom(), exchangeRequest.getTo());
@@ -72,6 +73,10 @@ public class ExchangeService {
 
     public void delete(UUID id) {
         exchangeRepository.delete(id);
+    }
+
+    public Optional<ExchangeData> findOne(UUID id) {
+        return exchangeRepository.findOne(id);
     }
 
     @Data

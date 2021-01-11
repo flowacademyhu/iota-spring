@@ -41,6 +41,14 @@ public class ExchangeController {
         return exchangeService.findAll();
     }
 
+    @GetMapping("/exchange/{id}")
+    public ResponseEntity<ExchangeData> findOne(@PathVariable String id) {
+        return exchangeService.findOne(UUID.fromString(id))
+//                .map(exchangeData -> ResponseEntity.ok(exchangeData))
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.noContent().build());
+    }
+
     @DeleteMapping("/exchange/{id}")
     public ResponseEntity<Void> delete(@PathVariable String id) {
         exchangeService.delete(UUID.fromString(id));

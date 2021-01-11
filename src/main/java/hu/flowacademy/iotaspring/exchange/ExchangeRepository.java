@@ -25,9 +25,16 @@ public class ExchangeRepository {
     }
 
     public void delete(UUID id) {
-        if (data.remove(id) == null) {
+//        if (data.remove(id) == null) {
+//            throw new RuntimeException("id not found " + id.toString());
+//        }
+        Optional.ofNullable(data.remove(id)).orElseThrow(() -> {
+            // TODO make custom exception
             throw new RuntimeException("id not found " + id.toString());
-        }
+        });
     }
 
+    public Optional<ExchangeData> findOne(UUID id) {
+        return Optional.ofNullable(data.get(id));
+    }
 }
