@@ -1,2 +1,9 @@
 server:
   port: 8000
+
+external:
+  client: default # can be rest-template or default
+  base-url-pattern: https://api.exchangeratesapi.io/latest?base=%s&symbols=%s
+#  params:
+#    - "base=%s"
+#    - "symbols=%s"

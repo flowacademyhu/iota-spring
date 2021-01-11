@@ -14,16 +14,18 @@ import java.net.http.HttpResponse;
 @RequiredArgsConstructor
 public class DefaultHttpClient implements ExchangeRateStrategy {
 
-    public static final String EXCHANGE_API_PATTERN = "https://api.exchangeratesapi.io/latest?base=%s&symbols=%s";
+//    @Value("${external.params}")
+//    private List<String> EXCHANGE_API_PARAMS;
 
+    private final String EXCHANGE_API_PATTERN;
     private final ObjectMapper mapper;
+    private final HttpClient client;
 
     @Override
     public ExchangeRate get(String from, String to) {
-        HttpClient client = HttpClient.newHttpClient();
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(
-                        String.format(EXCHANGE_API_PATTERN, to, from)
+                        String.format(EXCHANGE_API_PATTERN, from, to)
                 )).build();
         try {
             HttpResponse<String> send = client.send(request, HttpResponse.BodyHandlers.ofString());
@@ -35,7 +37,7 @@ public class DefaultHttpClient implements ExchangeRateStrategy {
             return ExchangeRate.builder()
                     .from(from)
                     .to(to)
-                    .rate(response.getRates().get(from))
+                    .rate(response.getRates().get(to))
                     .build();
         } catch (IOException | InterruptedException e) {
             log.error("error at request {}, {}, got: {}", from, to, e);
