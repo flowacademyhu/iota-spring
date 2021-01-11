@@ -23,9 +23,9 @@ import java.util.UUID;
 public class ExchangeService {
 
     private final ExchangeRepository exchangeRepository;
+    private final ObjectMapper mapper;
 
     public ExchangeData exchange(ExchangeRequest exchangeRequest) {
-        ObjectMapper mapper = new ObjectMapper();
 
         HttpClient client = HttpClient.newHttpClient();
         HttpRequest request = HttpRequest.newBuilder()
