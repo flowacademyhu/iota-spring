@@ -18,9 +18,10 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class ExchangeService {
 
+//    private final ExchangeJpaRepository exchangeJpaRepository;
+//    private final ExchangeCacheRepository exchangeCacheRepository;
     private final ExchangeRepository exchangeRepository;
     private final ExchangeRateStrategy exchangeRateStrategy;
-    private final ExchangeJpaRepository exchangeJpaRepository;
 
     public ExchangeData exchange(ExchangeRequest exchangeRequest) {
 
@@ -28,7 +29,7 @@ public class ExchangeService {
 
         var exchangeResponse = buildResponse(exchangeRequest, exchangeRate);
 
-        return exchangeJpaRepository.save(ExchangeData.builder()
+        return exchangeRepository.save(ExchangeData.builder()
                 .id(UUID.randomUUID().toString())
                 .amount(exchangeRequest.getAmount())
                 .result(exchangeResponse.getResult())
@@ -52,23 +53,17 @@ public class ExchangeService {
     }
 
     public List<ExchangeData> findAll(String from, String to) {
-//        return exchangeRepository.findAll(exchangeData -> true);
-        if (from != null) {
-            return exchangeJpaRepository.findByFrom(from);
-        } else if (to != null) {
-            return exchangeJpaRepository.findByToCurrency(to);
-        }
-        return exchangeJpaRepository.findAll();
+        return exchangeRepository.findAll(from, to);
     }
 
     public void delete(String id) {
 //        exchangeRepository.delete(id);
-        exchangeJpaRepository.deleteById(id);
+        exchangeRepository.delete(id);
     }
 
     public Optional<ExchangeData> findOne(String id) {
 //        return exchangeRepository.findOne(id);
-        return exchangeJpaRepository.findById(id);
+        return exchangeRepository.findOne(id);
     }
 
 }
