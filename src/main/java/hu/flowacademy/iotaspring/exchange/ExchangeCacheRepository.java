@@ -1,17 +1,21 @@
 package hu.flowacademy.iotaspring.exchange;
 
-import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Repository;
 
 import java.util.*;
 
-//@Repository
-@RequiredArgsConstructor
+@Repository("exchangeCacheRepository")
 public class ExchangeCacheRepository implements ExchangeRepository {
 
     private static final int CACHE_SIZE = 10;
 
     // Ez reprezentalja a JPA-t, de egy altalanosabb megoldast kinal
     private final ExchangeRepository exchangeRepository;
+
+    public ExchangeCacheRepository(@Qualifier("exchangeDBRepository") ExchangeRepository exchangeRepository) {
+        this.exchangeRepository = exchangeRepository;
+    }
 
     private Map<String, ExchangeData> cache = new HashMap<>();
 

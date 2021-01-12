@@ -1,10 +1,12 @@
 package hu.flowacademy.iotaspring.exchange;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
 
+@Repository("exchangeDBRepository")
 @RequiredArgsConstructor
 public class ExchangeDBRepository implements ExchangeRepository {
 

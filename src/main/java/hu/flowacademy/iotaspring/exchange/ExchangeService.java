@@ -2,8 +2,8 @@ package hu.flowacademy.iotaspring.exchange;
 
 import hu.flowacademy.iotaspring.exchange.external.ExchangeRate;
 import hu.flowacademy.iotaspring.exchange.external.ExchangeRateStrategy;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -15,13 +15,17 @@ import java.util.UUID;
 @Slf4j
 @Service
 @Transactional
-@RequiredArgsConstructor
+//@RequiredArgsConstructor
 public class ExchangeService {
 
-//    private final ExchangeJpaRepository exchangeJpaRepository;
-//    private final ExchangeCacheRepository exchangeCacheRepository;
     private final ExchangeRepository exchangeRepository;
     private final ExchangeRateStrategy exchangeRateStrategy;
+
+    public ExchangeService(@Qualifier("exchangeDBRepository") ExchangeRepository exchangeRepository,
+                           ExchangeRateStrategy exchangeRateStrategy) {
+        this.exchangeRepository = exchangeRepository;
+        this.exchangeRateStrategy = exchangeRateStrategy;
+    }
 
     public ExchangeData exchange(ExchangeRequest exchangeRequest) {
 
