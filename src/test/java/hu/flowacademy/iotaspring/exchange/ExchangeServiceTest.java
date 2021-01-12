@@ -18,7 +18,7 @@ import static org.mockito.Mockito.when;
 class ExchangeServiceTest {
 
     @Mock
-    private ExchangeRepository exchangeRepository;
+    private ExchangeCacheRepository exchangeCacheRepository;
 
     @Mock
     private ExchangeRateStrategy exchangeRateStrategy;
@@ -53,8 +53,8 @@ class ExchangeServiceTest {
                 .from("USD")
                 .to("HUF")
                 .result(BigDecimal.valueOf(29500.00).setScale(2));
-        when(exchangeRepository.create(exchangeRate.build()))
-                .thenReturn(exchangeRate.id(id).build());
+        when(exchangeCacheRepository.save(exchangeRate.build()))
+                .thenReturn(exchangeRate.id(id.toString()).build());
 
         return exchangeService.exchange(ExchangeRequest.builder()
                 .amount(BigDecimal.valueOf(100))

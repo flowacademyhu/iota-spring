@@ -1,0 +1,16 @@
+version: '3'
+services:
+  db:
+    image: percona:8.0.22-13-centos
+    environment:
+      MYSQL_ROOT_PASSWORD: exchange
+      MYSQL_DATABASE: exchange
+      MYSQL_USER: exchange
+      MYSQL_PASSWORD: exchange
+    ports:
+      - 3306:3306
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 8080:8080

@@ -2,10 +2,11 @@ package hu.flowacademy.iotaspring.exchange;
 
 import hu.flowacademy.iotaspring.exchange.external.ExchangeRate;
 import hu.flowacademy.iotaspring.exchange.external.ExchangeRateStrategy;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
@@ -13,11 +14,18 @@ import java.util.UUID;
 
 @Slf4j
 @Service
-@RequiredArgsConstructor
+@Transactional
+//@RequiredArgsConstructor
 public class ExchangeService {
 
     private final ExchangeRepository exchangeRepository;
     private final ExchangeRateStrategy exchangeRateStrategy;
+
+    public ExchangeService(@Qualifier("exchangeDBRepository") ExchangeRepository exchangeRepository,
+                           ExchangeRateStrategy exchangeRateStrategy) {
+        this.exchangeRepository = exchangeRepository;
+        this.exchangeRateStrategy = exchangeRateStrategy;
+    }
 
     public ExchangeData exchange(ExchangeRequest exchangeRequest) {
 
@@ -25,7 +33,8 @@ public class ExchangeService {
 
         var exchangeResponse = buildResponse(exchangeRequest, exchangeRate);
 
-        return exchangeRepository.create(ExchangeData.builder()
+        return exchangeRepository.save(ExchangeData.builder()
+                .id(UUID.randomUUID().toString())
                 .amount(exchangeRequest.getAmount())
                 .result(exchangeResponse.getResult())
                 .from(exchangeRequest.getFrom())
@@ -47,15 +56,17 @@ public class ExchangeService {
                 .build();
     }
 
-    public List<ExchangeData> findAll() {
-        return exchangeRepository.findAll(exchangeData -> true);
+    public List<ExchangeData> findAll(String from, String to) {
+        return exchangeRepository.findAll(from, to);
     }
 
-    public void delete(UUID id) {
+    public void delete(String id) {
+//        exchangeRepository.delete(id);
         exchangeRepository.delete(id);
     }
 
-    public Optional<ExchangeData> findOne(UUID id) {
+    public Optional<ExchangeData> findOne(String id) {
+//        return exchangeRepository.findOne(id);
         return exchangeRepository.findOne(id);
     }
 
