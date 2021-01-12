@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
@@ -13,11 +14,13 @@ import java.util.UUID;
 
 @Slf4j
 @Service
+@Transactional
 @RequiredArgsConstructor
 public class ExchangeService {
 
     private final ExchangeRepository exchangeRepository;
     private final ExchangeRateStrategy exchangeRateStrategy;
+    private final ExchangeJpaRepository exchangeJpaRepository;
 
     public ExchangeData exchange(ExchangeRequest exchangeRequest) {
 
@@ -25,7 +28,8 @@ public class ExchangeService {
 
         var exchangeResponse = buildResponse(exchangeRequest, exchangeRate);
 
-        return exchangeRepository.create(ExchangeData.builder()
+        return exchangeJpaRepository.save(ExchangeData.builder()
+                .id(UUID.randomUUID().toString())
                 .amount(exchangeRequest.getAmount())
                 .result(exchangeResponse.getResult())
                 .from(exchangeRequest.getFrom())
@@ -47,16 +51,24 @@ public class ExchangeService {
                 .build();
     }
 
-    public List<ExchangeData> findAll() {
-        return exchangeRepository.findAll(exchangeData -> true);
+    public List<ExchangeData> findAll(String from, String to) {
+//        return exchangeRepository.findAll(exchangeData -> true);
+        if (from != null) {
+            return exchangeJpaRepository.findByFrom(from);
+        } else if (to != null) {
+            return exchangeJpaRepository.findByToCurrency(to);
+        }
+        return exchangeJpaRepository.findAll();
     }
 
-    public void delete(UUID id) {
-        exchangeRepository.delete(id);
+    public void delete(String id) {
+//        exchangeRepository.delete(id);
+        exchangeJpaRepository.deleteById(id);
     }
 
-    public Optional<ExchangeData> findOne(UUID id) {
-        return exchangeRepository.findOne(id);
+    public Optional<ExchangeData> findOne(String id) {
+//        return exchangeRepository.findOne(id);
+        return exchangeJpaRepository.findById(id);
     }
 
 }

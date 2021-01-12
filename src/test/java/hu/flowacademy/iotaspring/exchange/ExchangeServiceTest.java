@@ -54,7 +54,7 @@ class ExchangeServiceTest {
                 .to("HUF")
                 .result(BigDecimal.valueOf(29500.00).setScale(2));
         when(exchangeRepository.create(exchangeRate.build()))
-                .thenReturn(exchangeRate.id(id).build());
+                .thenReturn(exchangeRate.id(id.toString()).build());
 
         return exchangeService.exchange(ExchangeRequest.builder()
                 .amount(BigDecimal.valueOf(100))

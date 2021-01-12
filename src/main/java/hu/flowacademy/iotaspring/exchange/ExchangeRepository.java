@@ -9,13 +9,13 @@ import java.util.stream.Collectors;
 @Repository
 public class ExchangeRepository {
 
-    private Map<UUID, ExchangeData> data = new HashMap<>();
+    private Map<String, ExchangeData> data = new HashMap<>();
 
     public ExchangeData create(ExchangeData exchangeData) {
         if (exchangeData.getId() != null) {
             throw new IllegalArgumentException();
         }
-        exchangeData.setId(UUID.randomUUID());
+        exchangeData.setId(UUID.randomUUID().toString());
         data.put(exchangeData.getId(), exchangeData);
         return exchangeData;
     }

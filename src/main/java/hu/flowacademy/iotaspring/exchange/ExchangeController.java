@@ -37,13 +37,14 @@ public class ExchangeController {
     }
 
     @GetMapping("/exchange")
-    public List<ExchangeData> findAll() {
-        return exchangeService.findAll();
+    public List<ExchangeData> findAll(@RequestParam(required = false) String from,
+                                      @RequestParam(required = false) String to) {
+        return exchangeService.findAll(from, to);
     }
 
     @GetMapping("/exchange/{id}")
     public ResponseEntity<ExchangeData> findOne(@PathVariable String id) {
-        return exchangeService.findOne(UUID.fromString(id))
+        return exchangeService.findOne(UUID.fromString(id).toString())
 //                .map(exchangeData -> ResponseEntity.ok(exchangeData))
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.noContent().build());
@@ -51,7 +52,7 @@ public class ExchangeController {
 
     @DeleteMapping("/exchange/{id}")
     public ResponseEntity<Void> delete(@PathVariable String id) {
-        exchangeService.delete(UUID.fromString(id));
+        exchangeService.delete(UUID.fromString(id).toString());
         return ResponseEntity.accepted().build();
     }
 
