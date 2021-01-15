@@ -1,12 +1,11 @@
 package hu.flowacademy.iotaspring.exchange;
 
+import hu.flowacademy.iotaspring.customer.CustomerModel;
 import lombok.*;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.math.BigDecimal;
+import java.util.List;
 
 // Adatabazis annotaciok
 @Entity
@@ -37,4 +36,19 @@ public class ExchangeData {
     @Column
     @NonNull
     private BigDecimal result;
+
+    @ManyToOne(cascade = CascadeType.ALL)
+    private CustomerModel customerModel;
+
+//    @ManyToMany
+//    @JoinTable(
+//            name = "exchange_customer_ids",
+//            joinColumns = @JoinColumn(name = "exchange_data_id"),
+//            inverseJoinColumns = @JoinColumn(name = "customer_model_id")
+//    )
+//    private List<CustomerModel> customerModelList;
+
+//    @OneToOne(cascade = CascadeType.ALL)
+//    @JoinColumn(name = "exchange_customer_id")
+//    private CustomerModel customerModel;
 }

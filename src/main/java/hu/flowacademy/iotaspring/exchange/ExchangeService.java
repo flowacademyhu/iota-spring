@@ -1,5 +1,6 @@
 package hu.flowacademy.iotaspring.exchange;
 
+import hu.flowacademy.iotaspring.customer.CustomerModel;
 import hu.flowacademy.iotaspring.exchange.external.ExchangeRate;
 import hu.flowacademy.iotaspring.exchange.external.ExchangeRateStrategy;
 import lombok.extern.slf4j.Slf4j;
@@ -39,7 +40,15 @@ public class ExchangeService {
                 .result(exchangeResponse.getResult())
                 .from(exchangeRequest.getFrom())
                 .to(exchangeRequest.getTo())
+                .customerModel(getCustomerModel(exchangeRequest))
                 .build());
+    }
+
+    private CustomerModel getCustomerModel(ExchangeRequest exchangeRequest) {
+        return CustomerModel.builder()
+                .id(UUID.randomUUID().toString())
+                .name(exchangeRequest.getCustomerName())
+                .build();
     }
 
     ExchangeData buildResponse(ExchangeRequest exchangeRequest, ExchangeRate exchangeRate) {

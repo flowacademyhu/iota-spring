@@ -35,6 +35,7 @@ public class InitDataLoader {
 //        for (int i = 0; i < 10; i++) {
 //
 //        }
+        exchangeJpaRepository.deleteAll();
         IntStream.range(0, 10).forEach(value -> {
             int amount = new Random().nextInt(1000);
             exchangeJpaRepository.save(ExchangeData.builder()
