@@ -19,3 +19,13 @@ spring:
     database-platform: org.hibernate.dialect.MySQL8Dialect
     hibernate:
       ddl-auto: update # create, update, create-drop, validate, none
+---
+spring:
+  profiles: test
+  datasource:
+    url: jdbc:h2:mem:test
+    initialization-mode: never
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.H2Dialect
