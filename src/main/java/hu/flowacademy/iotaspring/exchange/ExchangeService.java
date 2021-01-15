@@ -6,8 +6,8 @@ import hu.flowacademy.iotaspring.exchange.external.ExchangeRateStrategy;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.transaction.Transactional;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
@@ -65,6 +65,7 @@ public class ExchangeService {
                 .build();
     }
 
+    @Transactional(readOnly = true)
     public List<ExchangeData> findAll(String from, String to) {
         return exchangeRepository.findAll(from, to);
     }
@@ -74,6 +75,7 @@ public class ExchangeService {
         exchangeRepository.delete(id);
     }
 
+    @Transactional(readOnly = true)
     public Optional<ExchangeData> findOne(String id) {
 //        return exchangeRepository.findOne(id);
         return exchangeRepository.findOne(id);

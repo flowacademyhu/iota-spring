@@ -1,10 +1,11 @@
 package hu.flowacademy.iotaspring.customer;
 
-import hu.flowacademy.iotaspring.exchange.ExchangeData;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.List;
 
 @Entity
 @Table
@@ -20,6 +21,10 @@ public class CustomerModel {
 
     @Column
     private String name;
+
+    @Version
+    @Column
+    private int version;
 
 //    @OneToMany(mappedBy = "customerModel")
 //    private List<ExchangeData> exchangeDatas;
