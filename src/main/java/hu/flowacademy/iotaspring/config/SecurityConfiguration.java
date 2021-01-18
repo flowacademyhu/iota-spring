@@ -19,7 +19,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         auth.inMemoryAuthentication()
                 .withUser("admin")
                 .password(passwordEncoder().encode("admin"))
-                .roles("USER")
+                .authorities("USER")
         .and().passwordEncoder(passwordEncoder());
     }
 
@@ -29,9 +29,10 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .csrf().disable()
                 .cors().disable().authorizeRequests()
                 .antMatchers("/hello").permitAll()
-                .antMatchers("/randomNumber").hasAnyRole("ROLE_USER")
+                .antMatchers("/randomNumber").hasAuthority("USER")
         .anyRequest().authenticated().and()
                 .addFilter(new AuthenticationFilter(authenticationManager()))
+                .addFilter(new AuthorizationFilter(authenticationManager()))
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
     }
 
