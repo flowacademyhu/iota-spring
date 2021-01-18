@@ -16,5 +16,7 @@ public class ExchangeRequest {
     private String to;
     @NonNull
     private BigDecimal amount;
+    @NonNull
+    private String customerName;
 
 }
