@@ -3,6 +3,7 @@ package hu.flowacademy.iotaspring.customer;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataAccessException;
 import org.springframework.orm.ObjectOptimisticLockingFailureException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.TransactionException;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,6 +19,7 @@ import java.util.UUID;
 public class CustomerService {
 
     private final CustomerRepository customerRepository;
+    private final PasswordEncoder passwordEncoder;
 
     public List<CustomerModel> findAll() {
         return customerRepository.findAll();
@@ -30,6 +32,11 @@ public class CustomerService {
     public CustomerModel save(CustomerModel customerModel) {
         if (customerModel.getId() == null) {
             customerModel.setId(UUID.randomUUID().toString());
+            customerModel.setPassword(
+                    passwordEncoder.encode(
+                            customerModel.getPassword()
+                    )
+            );
         }
         try {
             return customerRepository.save(customerModel);
